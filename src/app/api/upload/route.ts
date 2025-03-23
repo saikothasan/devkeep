@@ -2,6 +2,9 @@ import { getCloudflareContext } from "@opennextjs/cloudflare"
 import type { NextRequest } from "next/server"
 import { v4 as uuidv4 } from "uuid"
 
+// Hardcoded R2 public URL
+const R2_PUBLIC_URL = "pub-39294b7d126d44b687cf528e9b2a308e.r2.dev"
+
 export const runtime = "edge"
 
 export async function POST(request: NextRequest) {
@@ -45,8 +48,8 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Get the public URL for the image
-    const imageUrl = `https://${env.R2_PUBLIC_URL}/${safeFilename}`
+    // Get the public URL for the image using the hardcoded R2 URL
+    const imageUrl = `https://${R2_PUBLIC_URL}/${safeFilename}`
 
     // Store metadata in KV
     const imageMetadata = {
