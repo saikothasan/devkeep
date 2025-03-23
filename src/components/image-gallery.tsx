@@ -36,7 +36,7 @@ export function ImageGallery() {
         if (!response.ok) {
           throw new Error("Failed to fetch images")
         }
-        const data = await response.json()
+        const data = (await response.json()) as ImageItem[]
         setImages(data)
       } catch (error) {
         console.error("Error fetching images:", error)
