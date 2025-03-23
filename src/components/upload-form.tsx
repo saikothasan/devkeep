@@ -58,6 +58,8 @@ export function UploadForm() {
         })
       }, 300)
 
+      console.log("Uploading file:", file.name, file.type, file.size)
+
       // Upload the file
       const response = await fetch("/api/upload", {
         method: "POST",
@@ -66,14 +68,24 @@ export function UploadForm() {
 
       clearInterval(progressInterval)
 
+      console.log("Upload response status:", response.status)
+
+      const responseText = await response.text()
+      console.log("Upload response:", responseText)
+
+      let data
+      try {
+        data = JSON.parse(responseText)
+      } catch (e) {
+        console.error("Failed to parse response as JSON:", e)
+        throw new Error(`Server response: ${responseText}`)
+      }
+
       if (!response.ok) {
-        const error = await response.text()
-        throw new Error(error || "Failed to upload image")
+        throw new Error(data?.error || "Failed to upload image")
       }
 
       setProgress(100)
-
-      const data = await response.json()
 
       toast({
         title: "Upload successful",
